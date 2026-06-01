@@ -1,9 +1,11 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useUpdateNodeInternals } from 'reactflow'
+import { Type } from 'lucide-react'
 import { useStore } from '@/store'
 import { BaseNode } from '@/nodes/BaseNode'
 
-const MIN_WIDTH = 220
+const ACCENT = '#0ea5e9'
+const MIN_WIDTH = 230
 const MAX_WIDTH = 440
 const MIN_BODY_HEIGHT = 44
 const MAX_BODY_HEIGHT = 320
@@ -55,6 +57,7 @@ export function TextNode({ id, data, selected }) {
       id: `var-${name}`,
       kind: 'target',
       side: 'left',
+      label: name,
     }))
     return [...variableHandles, { id: 'output', kind: 'source', side: 'right' }]
   }, [variables])
@@ -64,7 +67,7 @@ export function TextNode({ id, data, selected }) {
     if (!textarea) return
     textarea.style.height = 'auto'
     textarea.style.height = `${clamp(textarea.scrollHeight, MIN_BODY_HEIGHT, MAX_BODY_HEIGHT)}px`
-    const measured = longestLineWidth(textarea, text) + 48
+    const measured = longestLineWidth(textarea, text) + 52
     setWidth(clamp(measured, MIN_WIDTH, MAX_WIDTH))
   }, [text])
 
@@ -84,18 +87,20 @@ export function TextNode({ id, data, selected }) {
       data={data}
       selected={selected}
       title="Text"
+      icon={Type}
+      accent={ACCENT}
       handles={handles}
       width={width}
     >
-      <label className="flex flex-col gap-1">
-        <span className="text-[11px] font-medium text-muted-foreground">Text</span>
+      <label className="flex flex-col gap-1.5">
+        <span className="text-[11px] font-medium text-slate-500">Text</span>
         <textarea
           ref={textareaRef}
           value={text}
           onChange={onChange}
           rows={1}
           spellCheck={false}
-          className="nodrag w-full resize-none rounded-md border bg-transparent px-2 py-1.5 text-xs shadow-xs outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-indigo-500/40"
+          className="nodrag w-full resize-none rounded-md border border-slate-200 bg-transparent px-2.5 py-1.5 text-[13px] text-slate-800 shadow-xs outline-none transition-colors focus-visible:border-sky-400 focus-visible:ring-2 focus-visible:ring-sky-400/30"
         />
       </label>
     </BaseNode>

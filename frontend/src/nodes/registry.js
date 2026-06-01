@@ -11,12 +11,25 @@ import {
 } from 'lucide-react'
 import { TextNode } from '@/nodes/textNode'
 
+export const accents = {
+  customInput: '#10b981',
+  llm: '#8b5cf6',
+  customOutput: '#3b82f6',
+  text: '#0ea5e9',
+  math: '#f59e0b',
+  filter: '#06b6d4',
+  api: '#6366f1',
+  note: '#eab308',
+  conditional: '#f43f5e',
+}
+
 export const nodeDefs = [
   {
     type: 'customInput',
     label: 'Input',
     title: 'Input',
     icon: LogIn,
+    accent: accents.customInput,
     fields: [
       {
         key: 'inputName',
@@ -39,12 +52,13 @@ export const nodeDefs = [
     label: 'LLM',
     title: 'LLM',
     icon: Sparkles,
+    accent: accents.llm,
     description: 'This is a LLM.',
     fields: [],
     handles: [
-      { id: 'system', kind: 'target', side: 'left' },
-      { id: 'prompt', kind: 'target', side: 'left' },
-      { id: 'response', kind: 'source', side: 'right' },
+      { id: 'system', kind: 'target', side: 'left', label: 'system' },
+      { id: 'prompt', kind: 'target', side: 'left', label: 'prompt' },
+      { id: 'response', kind: 'source', side: 'right', label: 'response' },
     ],
   },
   {
@@ -52,6 +66,7 @@ export const nodeDefs = [
     label: 'Output',
     title: 'Output',
     icon: LogOut,
+    accent: accents.customOutput,
     fields: [
       {
         key: 'outputName',
@@ -73,6 +88,7 @@ export const nodeDefs = [
     type: 'text',
     label: 'Text',
     icon: Type,
+    accent: accents.text,
     component: TextNode,
   },
   {
@@ -80,6 +96,7 @@ export const nodeDefs = [
     label: 'Math',
     title: 'Math',
     icon: Calculator,
+    accent: accents.math,
     fields: [
       {
         key: 'operation',
@@ -95,9 +112,9 @@ export const nodeDefs = [
       },
     ],
     handles: [
-      { id: 'a', kind: 'target', side: 'left' },
-      { id: 'b', kind: 'target', side: 'left' },
-      { id: 'result', kind: 'source', side: 'right' },
+      { id: 'a', kind: 'target', side: 'left', label: 'a' },
+      { id: 'b', kind: 'target', side: 'left', label: 'b' },
+      { id: 'result', kind: 'source', side: 'right', label: 'result' },
     ],
   },
   {
@@ -105,6 +122,7 @@ export const nodeDefs = [
     label: 'Filter',
     title: 'Filter',
     icon: Filter,
+    accent: accents.filter,
     fields: [
       {
         key: 'condition',
@@ -123,6 +141,7 @@ export const nodeDefs = [
     label: 'API',
     title: 'API Request',
     icon: Globe,
+    accent: accents.api,
     fields: [
       {
         key: 'url',
@@ -139,8 +158,8 @@ export const nodeDefs = [
       },
     ],
     handles: [
-      { id: 'body', kind: 'target', side: 'left' },
-      { id: 'response', kind: 'source', side: 'right' },
+      { id: 'body', kind: 'target', side: 'left', label: 'body' },
+      { id: 'response', kind: 'source', side: 'right', label: 'response' },
     ],
   },
   {
@@ -148,6 +167,7 @@ export const nodeDefs = [
     label: 'Note',
     title: 'Note',
     icon: StickyNote,
+    accent: accents.note,
     fields: [{ key: 'note', type: 'textarea', placeholder: 'Write a note...' }],
     handles: [],
   },
@@ -156,6 +176,7 @@ export const nodeDefs = [
     label: 'Conditional',
     title: 'Conditional',
     icon: GitBranch,
+    accent: accents.conditional,
     fields: [
       {
         key: 'expression',
@@ -166,8 +187,8 @@ export const nodeDefs = [
     ],
     handles: [
       { id: 'input', kind: 'target', side: 'left' },
-      { id: 'true', kind: 'source', side: 'right' },
-      { id: 'false', kind: 'source', side: 'right' },
+      { id: 'true', kind: 'source', side: 'right', label: 'true' },
+      { id: 'false', kind: 'source', side: 'right', label: 'false' },
     ],
   },
 ]

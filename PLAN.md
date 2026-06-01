@@ -92,20 +92,20 @@ chips from the registry. Adding a simple node = one registry entry, no new file.
 
 ## Part 2: Styling
 
-shadcn neutral theme, one accent (indigo primary), no gradients. Tailwind utility
-classes for layout/spacing; shadcn primitives for every control.
+shadcn + Tailwind, no gradients. Each node type carries its own accent color
+(Input emerald, LLM violet, Output blue, Text sky, Math amber, Filter cyan, API
+indigo, Note yellow, Conditional rose) used on its icon chip, handles, and minimap
+swatch. White node cards on a slate canvas with a visible dotted background.
 
-| Token | Value |
+| Surface | Treatment |
 |---|---|
-| Surface | white nodes on a near-white canvas, subtle borders |
-| Accent | indigo primary on handles, selected state, submit button |
-| Radius | shadcn default (`--radius`), full-round handles |
-| Type | system sans, small node body, 600 titles |
+| Canvas | slate-50 with a `Dots` background; styled Controls and a color-coded MiniMap |
+| Node | white card, icon-chip header in the node accent, labeled colored handles |
+| Fields | shadcn Input/Select/Textarea with small slate labels |
+| Toolbar | white chips with accent icons and a hover lift |
+| Header | indigo logo mark, wordmark, indigo Submit; result alert is a Sonner toast |
 
-Styled surfaces: canvas + grid, node shell (Card), title row, handles (hover),
-fields (Input/Select/Textarea/Label), toolbar chips (draggable), submit bar
-(Button), result alert (Sonner toast). One accent and consistent spacing keep it
-quiet and unified.
+Per-type accents plus consistent spacing keep it lively but unified.
 
 ## Part 3: Text node logic
 

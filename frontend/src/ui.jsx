@@ -1,12 +1,17 @@
 import { useCallback, useRef, useState } from 'react'
-import ReactFlow, { Background, Controls, MiniMap } from 'reactflow'
+import ReactFlow, {
+  Background,
+  BackgroundVariant,
+  Controls,
+  MiniMap,
+} from 'reactflow'
 import { shallow } from 'zustand/shallow'
 import 'reactflow/dist/style.css'
 import { useStore } from '@/store'
-import { nodeDefs } from '@/nodes/registry'
+import { nodeDefs, accents } from '@/nodes/registry'
 import { BaseNode } from '@/nodes/BaseNode'
 
-const GRID = 20
+const GRID = 18
 
 function buildNodeTypes(defs) {
   const entries = defs.map((def) => {
@@ -18,6 +23,8 @@ function buildNodeTypes(defs) {
         selected={selected}
         title={def.title}
         description={def.description}
+        icon={def.icon}
+        accent={def.accent}
         fields={def.fields}
         handles={def.handles}
       />
@@ -78,7 +85,7 @@ export function PipelineUI() {
   )
 
   return (
-    <div ref={wrapperRef} className="min-h-0 flex-1">
+    <div ref={wrapperRef} className="min-h-0 flex-1 bg-slate-50">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -92,11 +99,19 @@ export function PipelineUI() {
         proOptions={{ hideAttribution: true }}
         snapGrid={[GRID, GRID]}
         connectionLineType="smoothstep"
+        defaultEdgeOptions={{ type: 'smoothstep' }}
         fitView
+        fitViewOptions={{ padding: 0.3, maxZoom: 1 }}
       >
-        <Background color="#e2e8f0" gap={GRID} />
-        <Controls />
-        <MiniMap pannable zoomable />
+        <Background variant={BackgroundVariant.Dots} gap={GRID} size={2} color="#cbd5e1" />
+        <Controls showInteractive={false} />
+        <MiniMap
+          pannable
+          zoomable
+          nodeColor={(node) => accents[node.type] ?? '#94a3b8'}
+          nodeStrokeWidth={0}
+          maskColor="rgba(148, 163, 184, 0.12)"
+        />
       </ReactFlow>
     </div>
   )

@@ -25,23 +25,27 @@ export function NodeField({ nodeId, data, field }) {
   const setValue = (next) => updateNodeField(nodeId, field.key, next)
 
   return (
-    <label className="flex flex-col gap-1">
+    <label className="flex flex-col gap-1.5">
       {field.label ? (
-        <span className="text-[11px] font-medium text-muted-foreground">
+        <span className="text-[11px] font-medium text-slate-500">
           {field.label}
         </span>
       ) : null}
 
       {field.type === 'select' ? (
         <Select value={value} onValueChange={setValue}>
-          <SelectTrigger className="nodrag h-8 w-full text-xs">
+          <SelectTrigger className="nodrag h-8 w-full text-[13px]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             {field.options.map((option) => {
               const { value: optionValue, label } = normalizeOption(option)
               return (
-                <SelectItem key={optionValue} value={optionValue} className="text-xs">
+                <SelectItem
+                  key={optionValue}
+                  value={optionValue}
+                  className="text-[13px]"
+                >
                   {label}
                 </SelectItem>
               )
@@ -53,7 +57,7 @@ export function NodeField({ nodeId, data, field }) {
           value={value}
           onChange={(event) => setValue(event.target.value)}
           placeholder={field.placeholder}
-          className="nodrag min-h-16 text-xs"
+          className="nodrag min-h-16 resize-none text-[13px]"
         />
       ) : (
         <Input
@@ -61,7 +65,7 @@ export function NodeField({ nodeId, data, field }) {
           value={value}
           onChange={(event) => setValue(event.target.value)}
           placeholder={field.placeholder}
-          className="nodrag h-8 text-xs"
+          className="nodrag h-8 text-[13px]"
         />
       )}
     </label>
