@@ -3,7 +3,7 @@ import { DraggableNode } from '@/components/DraggableNode'
 
 export function PipelineToolbar() {
   return (
-    <div className="rounded-xl border border-line bg-surface px-3.5 py-3">
+    <div className="border-b border-line px-5 py-3">
       <p className="mb-2.5 text-[11px] font-medium text-faint">
         Drag a node onto the canvas
       </p>

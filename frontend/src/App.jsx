@@ -1,19 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Workflow } from 'lucide-react'
 import { PipelineToolbar } from '@/components/Toolbar'
 import { PipelineUI } from '@/ui'
 import { SubmitBar } from '@/submit'
-import { cn } from '@/lib/utils'
 
 function plural(count, word) {
   return `${count} ${word}${count === 1 ? '' : 's'}`
 }
 
-function ResultOverlay({ result, error }) {
-  if (!result && !error) return null
+function ResultOverlay({ feedback }) {
+  if (!feedback) return null
+  const { result, error } = feedback
   return (
     <div className="pointer-events-none absolute inset-x-0 top-3 z-10 flex justify-center">
-      <div className="rounded-full border border-line bg-surface/95 px-3.5 py-1.5 text-xs">
+      <div className="animate-in fade-in slide-in-from-top-1 rounded-full border border-line bg-surface/95 px-3.5 py-1.5 text-xs duration-200">
         {error ? (
           <span className="text-clay">{error}</span>
         ) : (
@@ -31,12 +31,25 @@ function ResultOverlay({ result, error }) {
 }
 
 export default function App() {
-  const [result, setResult] = useState(null)
-  const [error, setError] = useState(null)
+  const [feedback, setFeedback] = useState(null)
+  const timerRef = useRef(null)
+
+  const flash = (next) => {
+    if (timerRef.current) clearTimeout(timerRef.current)
+    setFeedback(next)
+    timerRef.current = setTimeout(() => setFeedback(null), 4000)
+  }
+
+  useEffect(
+    () => () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    },
+    [],
+  )
 
   return (
-    <div className="flex h-screen flex-col bg-subtle text-ink">
-      <header className="flex items-center justify-between border-b border-line bg-surface px-5 py-3">
+    <div className="flex h-screen flex-col bg-canvas text-ink">
+      <header className="flex items-center justify-between border-b border-line px-5 py-3">
         <div className="flex items-center gap-2.5">
           <span className="flex size-7 items-center justify-center rounded-md bg-ink text-canvas">
             <Workflow className="size-4" strokeWidth={2.25} />
@@ -46,23 +59,16 @@ export default function App() {
           </span>
         </div>
         <SubmitBar
-          onResult={(value) => {
-            setResult(value)
-            setError(null)
-          }}
-          onError={(message) => {
-            setError(message)
-            setResult(null)
-          }}
+          onResult={(value) => flash({ result: value })}
+          onError={(message) => flash({ error: message })}
         />
       </header>
 
-      <div className="flex min-h-0 flex-1 flex-col gap-3 p-4">
-        <PipelineToolbar />
-        <div className="relative min-h-0 flex-1 overflow-hidden rounded-xl border border-line bg-canvas">
-          <PipelineUI />
-          <ResultOverlay result={result} error={error} />
-        </div>
+      <PipelineToolbar />
+
+      <div className="relative min-h-0 flex-1">
+        <PipelineUI />
+        <ResultOverlay feedback={feedback} />
       </div>
     </div>
   )
