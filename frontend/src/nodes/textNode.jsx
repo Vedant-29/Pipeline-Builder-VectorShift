@@ -91,9 +91,7 @@ export function TextNode({ id, data, selected }) {
       width={width}
     >
       <label className="flex flex-col gap-1.5">
-        <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-faint">
-          Text
-        </span>
+        <span className="text-[11px] font-medium text-faint">Text</span>
         <textarea
           ref={textareaRef}
           value={text}

@@ -1,13 +1,7 @@
+import { ChevronDown } from 'lucide-react'
 import { useStore } from '@/store'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 
 function resolveDefault(field, nodeId) {
   if (typeof field.default === 'function') return field.default(nodeId)
@@ -27,31 +21,27 @@ export function NodeField({ nodeId, data, field }) {
   return (
     <label className="flex flex-col gap-1.5">
       {field.label ? (
-        <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-faint">
-          {field.label}
-        </span>
+        <span className="text-[11px] font-medium text-faint">{field.label}</span>
       ) : null}
 
       {field.type === 'select' ? (
-        <Select value={value} onValueChange={setValue}>
-          <SelectTrigger className="nodrag h-8 w-full text-[13px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
+        <div className="relative">
+          <select
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+            className="nodrag h-8 w-full appearance-none rounded-md border border-line bg-surface pr-7 pl-2.5 text-[13px] text-ink outline-none transition-colors hover:border-line-strong focus-visible:border-clay focus-visible:ring-2 focus-visible:ring-clay/20"
+          >
             {field.options.map((option) => {
               const { value: optionValue, label } = normalizeOption(option)
               return (
-                <SelectItem
-                  key={optionValue}
-                  value={optionValue}
-                  className="text-[13px]"
-                >
+                <option key={optionValue} value={optionValue}>
                   {label}
-                </SelectItem>
+                </option>
               )
             })}
-          </SelectContent>
-        </Select>
+          </select>
+          <ChevronDown className="pointer-events-none absolute top-1/2 right-2 size-4 -translate-y-1/2 text-faint" />
+        </div>
       ) : field.type === 'textarea' ? (
         <Textarea
           value={value}

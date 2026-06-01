@@ -5,6 +5,18 @@ export function DraggableNode({ type, label, icon: Icon }) {
       JSON.stringify({ nodeType: type }),
     )
     event.dataTransfer.effectAllowed = 'move'
+
+    const chip = event.currentTarget
+    const ghost = chip.cloneNode(true)
+    ghost.style.position = 'fixed'
+    ghost.style.top = '-9999px'
+    ghost.style.left = '-9999px'
+    ghost.style.width = `${chip.offsetWidth}px`
+    ghost.style.margin = '0'
+    ghost.style.boxShadow = 'none'
+    document.body.appendChild(ghost)
+    event.dataTransfer.setDragImage(ghost, chip.offsetWidth / 2, chip.offsetHeight / 2)
+    setTimeout(() => document.body.removeChild(ghost), 0)
   }
 
   return (
@@ -12,9 +24,9 @@ export function DraggableNode({ type, label, icon: Icon }) {
       draggable
       tabIndex={0}
       onDragStart={onDragStart}
-      className="flex cursor-grab items-center gap-2 rounded-lg border border-line bg-surface px-2.5 py-1.5 text-[13px] font-medium text-ink transition-colors hover:border-line-strong hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-clay/30 active:cursor-grabbing"
+      className="flex cursor-grab items-center gap-1.5 rounded-md border border-line bg-surface px-2 py-1 text-[12px] font-medium text-ink transition-colors hover:border-line-strong hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-clay/30 active:cursor-grabbing"
     >
-      {Icon ? <Icon className="size-4 text-faint" strokeWidth={2} /> : null}
+      {Icon ? <Icon className="size-3.5 text-faint" strokeWidth={2} /> : null}
       <span>{label}</span>
     </div>
   )

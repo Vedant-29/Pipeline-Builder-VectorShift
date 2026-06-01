@@ -2,7 +2,6 @@ import { Workflow } from 'lucide-react'
 import { PipelineToolbar } from '@/components/Toolbar'
 import { PipelineUI } from '@/ui'
 import { SubmitBar } from '@/submit'
-import { Toaster } from '@/components/ui/sonner'
 
 export default function App() {
   return (
@@ -12,12 +11,9 @@ export default function App() {
           <span className="flex size-7 items-center justify-center rounded-md bg-ink text-canvas">
             <Workflow className="size-4" strokeWidth={2.25} />
           </span>
-          <div className="flex items-baseline gap-2">
-            <span className="text-[15px] font-semibold tracking-tight text-ink">
-              VectorShift
-            </span>
-            <span className="text-xs text-faint">Pipeline Builder</span>
-          </div>
+          <span className="text-[15px] font-semibold tracking-tight text-ink">
+            VectorShift
+          </span>
         </div>
         <SubmitBar />
       </header>
@@ -28,8 +24,6 @@ export default function App() {
           <PipelineUI />
         </div>
       </div>
-
-      <Toaster />
     </div>
   )
 }
