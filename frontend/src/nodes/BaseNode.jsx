@@ -1,5 +1,6 @@
 import { Fragment } from 'react'
-import { Handle, Position } from 'reactflow'
+import { Handle, Position, useReactFlow } from '@xyflow/react'
+import { X } from 'lucide-react'
 import { NodeField } from '@/nodes/NodeField'
 import { cn } from '@/lib/utils'
 
@@ -9,6 +10,20 @@ function handlesOnSide(handles, side) {
 
 function handleOffset(index, count) {
   return `${((index + 1) / (count + 1)) * 100}%`
+}
+
+function HandleLabel({ side, top, children }) {
+  return (
+    <span
+      className={cn(
+        'pointer-events-none absolute -translate-y-1/2 whitespace-nowrap rounded bg-white px-1.5 py-0.5 text-[10px] font-medium text-slate-500 shadow-xs ring-1 ring-slate-200/70',
+        side === 'left' ? 'right-full mr-2' : 'left-full ml-2',
+      )}
+      style={{ top }}
+    >
+      {children}
+    </span>
+  )
 }
 
 export function BaseNode({
@@ -24,19 +39,21 @@ export function BaseNode({
   children,
   width = 250,
 }) {
+  const { deleteElements } = useReactFlow()
   const leftHandles = handlesOnSide(handles, 'left')
   const rightHandles = handlesOnSide(handles, 'right')
 
   return (
     <div
       className={cn(
-        'relative rounded-xl border border-slate-200/80 bg-white transition-shadow',
-        !selected && 'shadow-sm hover:shadow-md',
+        'group relative rounded-xl border border-slate-200 bg-white transition-shadow',
+        selected ? '' : 'shadow-sm hover:shadow',
       )}
       style={{
         width,
+        '--node-accent': accent,
         boxShadow: selected
-          ? `0 0 0 2px ${accent}, 0 8px 20px -6px rgba(15, 23, 42, 0.18)`
+          ? `0 0 0 1.5px ${accent}, 0 2px 10px -4px rgba(15, 23, 42, 0.12)`
           : undefined,
       }}
     >
@@ -51,12 +68,9 @@ export function BaseNode({
               style={{ top, background: accent }}
             />
             {handle.label ? (
-              <span
-                className="pointer-events-none absolute right-full mr-2 -translate-y-1/2 whitespace-nowrap rounded bg-white px-1.5 py-0.5 text-[10px] font-medium text-slate-500 shadow-sm ring-1 ring-slate-200/70"
-                style={{ top }}
-              >
+              <HandleLabel side="left" top={top}>
                 {handle.label}
-              </span>
+              </HandleLabel>
             ) : null}
           </Fragment>
         )
@@ -71,7 +85,17 @@ export function BaseNode({
             <Icon className="size-3.5" strokeWidth={2.25} />
           </span>
         ) : null}
-        <span className="text-[13px] font-semibold text-slate-800">{title}</span>
+        <span className="flex-1 text-[13px] font-semibold text-slate-800">
+          {title}
+        </span>
+        <button
+          type="button"
+          onClick={() => deleteElements({ nodes: [{ id }] })}
+          aria-label="Delete node"
+          className="nodrag flex size-5 items-center justify-center rounded text-slate-400 opacity-0 transition-colors hover:bg-red-50 hover:text-red-500 focus-visible:opacity-100 focus-visible:outline-none group-hover:opacity-100"
+        >
+          <X className="size-3.5" />
+        </button>
       </div>
 
       <div className="flex flex-col gap-3 px-3 py-3">
@@ -95,12 +119,9 @@ export function BaseNode({
               style={{ top, background: accent }}
             />
             {handle.label ? (
-              <span
-                className="pointer-events-none absolute left-full ml-2 -translate-y-1/2 whitespace-nowrap rounded bg-white px-1.5 py-0.5 text-[10px] font-medium text-slate-500 shadow-sm ring-1 ring-slate-200/70"
-                style={{ top }}
-              >
+              <HandleLabel side="right" top={top}>
                 {handle.label}
-              </span>
+              </HandleLabel>
             ) : null}
           </Fragment>
         )

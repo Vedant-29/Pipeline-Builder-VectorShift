@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { useUpdateNodeInternals } from 'reactflow'
+import { useUpdateNodeInternals } from '@xyflow/react'
 import { Type } from 'lucide-react'
 import { useStore } from '@/store'
 import { BaseNode } from '@/nodes/BaseNode'

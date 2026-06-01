@@ -1,15 +1,19 @@
-import { useCallback, useRef, useState } from 'react'
-import ReactFlow, {
+import { useCallback } from 'react'
+import {
+  ReactFlow,
+  ReactFlowProvider,
   Background,
   BackgroundVariant,
   Controls,
   MiniMap,
-} from 'reactflow'
+  useReactFlow,
+} from '@xyflow/react'
 import { shallow } from 'zustand/shallow'
-import 'reactflow/dist/style.css'
+import '@xyflow/react/dist/style.css'
 import { useStore } from '@/store'
 import { nodeDefs, accents } from '@/nodes/registry'
 import { BaseNode } from '@/nodes/BaseNode'
+import { DeletableEdge } from '@/components/DeletableEdge'
 
 const GRID = 18
 
@@ -36,6 +40,7 @@ function buildNodeTypes(defs) {
 }
 
 const nodeTypes = buildNodeTypes(nodeDefs)
+const edgeTypes = { deletable: DeletableEdge }
 
 const selector = (state) => ({
   nodes: state.nodes,
@@ -47,9 +52,8 @@ const selector = (state) => ({
   onConnect: state.onConnect,
 })
 
-export function PipelineUI() {
-  const wrapperRef = useRef(null)
-  const [rfInstance, setRfInstance] = useState(null)
+function FlowCanvas() {
+  const { screenToFlowPosition } = useReactFlow()
   const {
     nodes,
     edges,
@@ -68,51 +72,55 @@ export function PipelineUI() {
   const onDrop = useCallback(
     (event) => {
       event.preventDefault()
-      if (!rfInstance) return
       const raw = event.dataTransfer.getData('application/reactflow')
       if (!raw) return
       const { nodeType } = JSON.parse(raw)
       if (!nodeType) return
-      const bounds = wrapperRef.current.getBoundingClientRect()
-      const position = rfInstance.project({
-        x: event.clientX - bounds.left,
-        y: event.clientY - bounds.top,
+      const position = screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
       })
       const id = getNodeID(nodeType)
       addNode({ id, type: nodeType, position, data: { id, nodeType } })
     },
-    [rfInstance, getNodeID, addNode],
+    [screenToFlowPosition, getNodeID, addNode],
   )
 
   return (
-    <div ref={wrapperRef} className="min-h-0 flex-1 bg-slate-50">
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        nodeTypes={nodeTypes}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        onDrop={onDrop}
-        onDragOver={onDragOver}
-        onInit={setRfInstance}
-        proOptions={{ hideAttribution: true }}
-        snapGrid={[GRID, GRID]}
-        connectionLineType="smoothstep"
-        defaultEdgeOptions={{ type: 'smoothstep' }}
-        fitView
-        fitViewOptions={{ padding: 0.3, maxZoom: 1 }}
-      >
-        <Background variant={BackgroundVariant.Dots} gap={GRID} size={2} color="#cbd5e1" />
-        <Controls showInteractive={false} />
-        <MiniMap
-          pannable
-          zoomable
-          nodeColor={(node) => accents[node.type] ?? '#94a3b8'}
-          nodeStrokeWidth={0}
-          maskColor="rgba(148, 163, 184, 0.12)"
-        />
-      </ReactFlow>
-    </div>
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      onConnect={onConnect}
+      onDrop={onDrop}
+      onDragOver={onDragOver}
+      proOptions={{ hideAttribution: true }}
+      deleteKeyCode={['Backspace', 'Delete']}
+      connectionLineType="smoothstep"
+      defaultEdgeOptions={{ type: 'deletable' }}
+      fitView
+      fitViewOptions={{ padding: 0.3, maxZoom: 1 }}
+    >
+      <Background variant={BackgroundVariant.Dots} gap={GRID} size={2} color="#cbd5e1" />
+      <Controls showInteractive={false} />
+      <MiniMap
+        pannable
+        zoomable
+        nodeColor={(node) => accents[node.type] ?? '#94a3b8'}
+        nodeStrokeWidth={0}
+        maskColor="rgba(148, 163, 184, 0.1)"
+      />
+    </ReactFlow>
+  )
+}
+
+export function PipelineUI() {
+  return (
+    <ReactFlowProvider>
+      <FlowCanvas />
+    </ReactFlowProvider>
   )
 }

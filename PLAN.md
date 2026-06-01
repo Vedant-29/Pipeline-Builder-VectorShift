@@ -14,6 +14,7 @@ Nothing beyond the PDF scope.
 | Bundler | Migrate CRA to Vite, keep a `start` script | shadcn needs a modern bundler; CRA is deprecated and unsupported by the shadcn CLI. `npm start` still works for the grader. |
 | Language | JavaScript + JSX | PDF says JavaScript/React. shadcn generated as JSX, not TS. |
 | UI kit | Tailwind + shadcn/ui (neutral theme) | Requested. Minimal, accessible Radix primitives, no gradients. |
+| Canvas | @xyflow/react v12 with ReactFlowProvider + hooks | Current ReactFlow package. `useReactFlow().screenToFlowPosition`, `deleteElements`, `EdgeLabelRenderer` for the deletable edge. |
 | State | Keep the existing zustand store, extend it | Already wired into the canvas. |
 | Backend | Keep FastAPI, one POST endpoint | Matches the PDF. |
 | Comments | None anywhere | Project rule: self-documenting code only. |

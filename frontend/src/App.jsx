@@ -6,7 +6,7 @@ import { Toaster } from '@/components/ui/sonner'
 
 export default function App() {
   return (
-    <div className="flex h-screen flex-col bg-slate-50 text-slate-900">
+    <div className="flex h-screen flex-col bg-slate-100 text-slate-900">
       <header className="flex items-center justify-between border-b border-slate-200 bg-white px-5 py-3">
         <div className="flex items-center gap-2.5">
           <span className="flex size-7 items-center justify-center rounded-lg bg-indigo-600 text-white shadow-sm">
@@ -21,8 +21,14 @@ export default function App() {
         </div>
         <SubmitBar />
       </header>
-      <PipelineToolbar />
-      <PipelineUI />
+
+      <div className="flex min-h-0 flex-1 flex-col gap-3 p-4">
+        <PipelineToolbar />
+        <div className="min-h-0 flex-1 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-sm">
+          <PipelineUI />
+        </div>
+      </div>
+
       <Toaster />
     </div>
   )

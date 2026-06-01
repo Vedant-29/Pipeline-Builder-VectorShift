@@ -1,5 +1,10 @@
 import { createWithEqualityFn } from 'zustand/traditional'
-import { addEdge, applyNodeChanges, applyEdgeChanges, MarkerType } from 'reactflow'
+import {
+  addEdge,
+  applyNodeChanges,
+  applyEdgeChanges,
+  MarkerType,
+} from '@xyflow/react'
 
 export const useStore = createWithEqualityFn((set, get) => ({
   nodes: [],
@@ -28,9 +33,8 @@ export const useStore = createWithEqualityFn((set, get) => ({
       edges: addEdge(
         {
           ...connection,
-          type: 'smoothstep',
-          animated: true,
-          markerEnd: { type: MarkerType.Arrow, height: 20, width: 20 },
+          type: 'deletable',
+          markerEnd: { type: MarkerType.ArrowClosed, height: 18, width: 18 },
         },
         get().edges,
       ),

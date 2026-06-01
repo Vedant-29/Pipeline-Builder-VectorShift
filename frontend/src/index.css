@@ -139,13 +139,16 @@ body,
   width: 11px;
   height: 11px;
   border: 2px solid #ffffff;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.2);
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.18);
+  transition: box-shadow 0.12s ease;
 }
 
 .react-flow__handle:hover {
-  transform: scale(1.25);
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+
+.react-flow__handle.connecting {
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.18);
 }
 
 .react-flow__edge-path {
