@@ -2,6 +2,7 @@ import { Fragment } from 'react'
 import { Handle, Position, useReactFlow } from '@xyflow/react'
 import { X } from 'lucide-react'
 import { NodeField } from '@/nodes/NodeField'
+import { useStore } from '@/store'
 import { cn } from '@/lib/utils'
 
 function handlesOnSide(handles, side) {
@@ -39,6 +40,13 @@ export function BaseNode({
   width = 248,
 }) {
   const { deleteElements } = useReactFlow()
+  const edges = useStore((state) => state.edges)
+  const isConnected = (handleId) =>
+    edges.some(
+      (edge) =>
+        edge.sourceHandle === `${id}-${handleId}` ||
+        edge.targetHandle === `${id}-${handleId}`,
+    )
   const leftHandles = handlesOnSide(handles, 'left')
   const rightHandles = handlesOnSide(handles, 'right')
 
@@ -63,7 +71,7 @@ export function BaseNode({
               id={`${id}-${handle.id}`}
               style={{ top }}
             />
-            {handle.label ? (
+            {handle.label && !isConnected(handle.id) ? (
               <HandleLabel side="left" top={top}>
                 {handle.label}
               </HandleLabel>
@@ -107,7 +115,7 @@ export function BaseNode({
               id={`${id}-${handle.id}`}
               style={{ top }}
             />
-            {handle.label ? (
+            {handle.label && !isConnected(handle.id) ? (
               <HandleLabel side="right" top={top}>
                 {handle.label}
               </HandleLabel>
