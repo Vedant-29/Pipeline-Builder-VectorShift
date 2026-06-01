@@ -10,6 +10,7 @@ import {
   GitBranch,
 } from 'lucide-react'
 import { TextNode } from '@/nodes/textNode'
+import { NoteNode } from '@/nodes/noteNode'
 
 export const nodeDefs = [
   {
@@ -146,10 +147,8 @@ export const nodeDefs = [
   {
     type: 'note',
     label: 'Note',
-    title: 'Note',
     icon: StickyNote,
-    fields: [{ key: 'note', type: 'textarea', placeholder: 'Write a note...' }],
-    handles: [],
+    component: NoteNode,
   },
   {
     type: 'conditional',

@@ -1,13 +1,9 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useUpdateNodeInternals } from '@xyflow/react'
 import { Type } from 'lucide-react'
 import { useStore } from '@/store'
 import { BaseNode } from '@/nodes/BaseNode'
-
-const MIN_WIDTH = 230
-const MAX_WIDTH = 440
-const MIN_BODY_HEIGHT = 44
-const MAX_BODY_HEIGHT = 320
+import { useAutoSize, AUTOSIZE_TEXTAREA_CLASS } from '@/nodes/useAutoSize'
 
 function extractVariables(text) {
   const pattern = /\{\{\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*\}\}/g
@@ -24,30 +20,11 @@ function extractVariables(text) {
   return variables
 }
 
-function longestLineWidth(textarea, text) {
-  const style = window.getComputedStyle(textarea)
-  const canvas =
-    longestLineWidth.canvas ||
-    (longestLineWidth.canvas = document.createElement('canvas'))
-  const context = canvas.getContext('2d')
-  context.font = `${style.fontSize} ${style.fontFamily}`
-  let widest = 0
-  for (const line of text.split('\n')) {
-    widest = Math.max(widest, context.measureText(line).width)
-  }
-  return widest
-}
-
-function clamp(value, min, max) {
-  return Math.min(Math.max(value, min), max)
-}
-
 export function TextNode({ id, data, selected }) {
   const updateNodeField = useStore((state) => state.updateNodeField)
   const updateNodeInternals = useUpdateNodeInternals()
-  const textareaRef = useRef(null)
   const [text, setText] = useState(data?.text ?? '{{input}}')
-  const [width, setWidth] = useState(MIN_WIDTH)
+  const { textareaRef, width } = useAutoSize(text)
 
   const variables = useMemo(() => extractVariables(text), [text])
 
@@ -60,15 +37,6 @@ export function TextNode({ id, data, selected }) {
     }))
     return [...variableHandles, { id: 'output', kind: 'source', side: 'right' }]
   }, [variables])
-
-  useLayoutEffect(() => {
-    const textarea = textareaRef.current
-    if (!textarea) return
-    textarea.style.height = 'auto'
-    textarea.style.height = `${clamp(textarea.scrollHeight, MIN_BODY_HEIGHT, MAX_BODY_HEIGHT)}px`
-    const measured = longestLineWidth(textarea, text) + 52
-    setWidth(clamp(measured, MIN_WIDTH, MAX_WIDTH))
-  }, [text])
 
   useEffect(() => {
     updateNodeInternals(id)
@@ -98,7 +66,7 @@ export function TextNode({ id, data, selected }) {
           onChange={onChange}
           rows={1}
           spellCheck={false}
-          className="nodrag w-full resize-none rounded-md border border-line bg-surface px-2.5 py-1.5 font-mono text-[12.5px] text-ink outline-none transition-colors placeholder:text-faint focus-visible:border-clay focus-visible:ring-2 focus-visible:ring-clay/20"
+          className={AUTOSIZE_TEXTAREA_CLASS}
         />
       </label>
     </BaseNode>
