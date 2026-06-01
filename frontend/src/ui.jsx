@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 import {
   ReactFlow,
-  ReactFlowProvider,
   Background,
   BackgroundVariant,
   Controls,
@@ -14,6 +13,7 @@ import { useStore } from '@/store'
 import { nodeDefs } from '@/nodes/registry'
 import { BaseNode } from '@/nodes/BaseNode'
 import { DeletableEdge } from '@/components/DeletableEdge'
+import { createsCycle } from '@/lib/graph'
 
 const GRID = 18
 
@@ -28,7 +28,6 @@ function buildNodeTypes(defs) {
         title={def.title}
         description={def.description}
         icon={def.icon}
-        accent={def.accent}
         fields={def.fields}
         handles={def.handles}
       />
@@ -52,7 +51,7 @@ const selector = (state) => ({
   onConnect: state.onConnect,
 })
 
-function FlowCanvas() {
+export function PipelineUI({ onCycleWarning }) {
   const { screenToFlowPosition } = useReactFlow()
   const {
     nodes,
@@ -86,6 +85,21 @@ function FlowCanvas() {
     [screenToFlowPosition, getNodeID, addNode],
   )
 
+  const handleConnect = useCallback(
+    (connection) => {
+      if (createsCycle(edges, connection.source, connection.target)) {
+        onCycleWarning?.()
+      }
+      onConnect(connection)
+    },
+    [edges, onConnect, onCycleWarning],
+  )
+
+  const isValidConnection = useCallback(
+    (connection) => connection.source !== connection.target,
+    [],
+  )
+
   return (
     <ReactFlow
       nodes={nodes}
@@ -94,7 +108,8 @@ function FlowCanvas() {
       edgeTypes={edgeTypes}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
+      onConnect={handleConnect}
+      isValidConnection={isValidConnection}
       onDrop={onDrop}
       onDragOver={onDragOver}
       proOptions={{ hideAttribution: true }}
@@ -104,23 +119,15 @@ function FlowCanvas() {
       nodeOrigin={[0, 0]}
       defaultViewport={{ x: 0, y: 0, zoom: 1 }}
     >
-      <Background variant={BackgroundVariant.Dots} gap={GRID} size={1.5} color="#d6cfc2" />
+      <Background variant={BackgroundVariant.Dots} gap={GRID} size={1.5} color="var(--dot)" />
       <Controls showInteractive={false} />
       <MiniMap
         pannable
         zoomable
-        nodeColor="#cdc6ba"
+        nodeColor="var(--minimap-node)"
         nodeStrokeWidth={0}
-        maskColor="rgba(124, 117, 108, 0.08)"
+        maskColor="var(--minimap-mask)"
       />
     </ReactFlow>
-  )
-}
-
-export function PipelineUI() {
-  return (
-    <ReactFlowProvider>
-      <FlowCanvas />
-    </ReactFlowProvider>
   )
 }

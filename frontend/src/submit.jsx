@@ -1,13 +1,12 @@
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
 import { useStore } from '@/store'
 
 const ENDPOINT = 'http://localhost:8000/pipelines/parse'
 
-export function SubmitBar({ onResult, onError }) {
+export function useSubmit({ onResult, onError }) {
   const [loading, setLoading] = useState(false)
 
-  const onSubmit = async () => {
+  const submit = async () => {
     const { nodes, edges } = useStore.getState()
     setLoading(true)
     try {
@@ -25,14 +24,5 @@ export function SubmitBar({ onResult, onError }) {
     }
   }
 
-  return (
-    <Button
-      onClick={onSubmit}
-      disabled={loading}
-      size="sm"
-      className="bg-ink text-canvas hover:bg-ink/90"
-    >
-      {loading ? 'Submitting…' : 'Submit'}
-    </Button>
-  )
+  return { submit, loading }
 }
