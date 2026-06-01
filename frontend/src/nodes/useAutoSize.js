@@ -26,17 +26,21 @@ function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max)
 }
 
-export function useAutoSize(text) {
+export function useAutoSize(text, enabled = true) {
   const textareaRef = useRef(null)
   const [width, setWidth] = useState(MIN_WIDTH)
 
   useLayoutEffect(() => {
     const textarea = textareaRef.current
     if (!textarea) return
+    if (!enabled) {
+      textarea.style.height = ''
+      return
+    }
     textarea.style.height = 'auto'
     textarea.style.height = `${clamp(textarea.scrollHeight, MIN_HEIGHT, MAX_HEIGHT)}px`
     setWidth(clamp(longestLineWidth(textarea, text) + 52, MIN_WIDTH, MAX_WIDTH))
-  }, [text])
+  }, [text, enabled])
 
   return { textareaRef, width }
 }

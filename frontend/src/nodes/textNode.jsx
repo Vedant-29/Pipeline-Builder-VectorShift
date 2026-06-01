@@ -4,6 +4,7 @@ import { Type } from 'lucide-react'
 import { useStore } from '@/store'
 import { BaseNode } from '@/nodes/BaseNode'
 import { useAutoSize, AUTOSIZE_TEXTAREA_CLASS } from '@/nodes/useAutoSize'
+import { cn } from '@/lib/utils'
 
 function extractVariables(text) {
   const pattern = /\{\{\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*\}\}/g
@@ -24,7 +25,8 @@ export function TextNode({ id, data, selected }) {
   const updateNodeField = useStore((state) => state.updateNodeField)
   const updateNodeInternals = useUpdateNodeInternals()
   const [text, setText] = useState(data?.text ?? '{{input}}')
-  const { textareaRef, width } = useAutoSize(text)
+  const resized = data?.w != null
+  const { textareaRef, width } = useAutoSize(text, !resized)
 
   const variables = useMemo(() => extractVariables(text), [text])
 
@@ -40,7 +42,7 @@ export function TextNode({ id, data, selected }) {
 
   useEffect(() => {
     updateNodeInternals(id)
-  }, [id, handles, width, updateNodeInternals])
+  }, [id, handles, width, data?.w, data?.h, updateNodeInternals])
 
   const onChange = (event) => {
     const next = event.target.value
@@ -57,8 +59,10 @@ export function TextNode({ id, data, selected }) {
       icon={Type}
       handles={handles}
       width={width}
+      minWidth={200}
+      minHeight={120}
     >
-      <label className="flex flex-col gap-1.5">
+      <label className={cn('flex flex-col gap-1.5', resized && 'min-h-0 flex-1')}>
         <span className="text-[11px] font-medium text-faint">Text</span>
         <textarea
           ref={textareaRef}
@@ -66,7 +70,10 @@ export function TextNode({ id, data, selected }) {
           onChange={onChange}
           rows={1}
           spellCheck={false}
-          className={AUTOSIZE_TEXTAREA_CLASS}
+          className={cn(
+            AUTOSIZE_TEXTAREA_CLASS,
+            resized && 'min-h-0 flex-1 overflow-auto',
+          )}
         />
       </label>
     </BaseNode>

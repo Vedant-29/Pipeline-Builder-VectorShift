@@ -4,16 +4,18 @@ import { StickyNote } from 'lucide-react'
 import { useStore } from '@/store'
 import { BaseNode } from '@/nodes/BaseNode'
 import { useAutoSize, AUTOSIZE_TEXTAREA_CLASS } from '@/nodes/useAutoSize'
+import { cn } from '@/lib/utils'
 
 export function NoteNode({ id, data, selected }) {
   const updateNodeField = useStore((state) => state.updateNodeField)
   const updateNodeInternals = useUpdateNodeInternals()
   const [note, setNote] = useState(data?.note ?? '')
-  const { textareaRef, width } = useAutoSize(note)
+  const resized = data?.w != null
+  const { textareaRef, width } = useAutoSize(note, !resized)
 
   useEffect(() => {
     updateNodeInternals(id)
-  }, [id, width, updateNodeInternals])
+  }, [id, width, data?.w, data?.h, updateNodeInternals])
 
   const onChange = (event) => {
     const next = event.target.value
@@ -30,6 +32,8 @@ export function NoteNode({ id, data, selected }) {
       icon={StickyNote}
       handles={[]}
       width={width}
+      minWidth={200}
+      minHeight={120}
     >
       <textarea
         ref={textareaRef}
@@ -38,7 +42,10 @@ export function NoteNode({ id, data, selected }) {
         rows={1}
         spellCheck={false}
         placeholder="Write a note..."
-        className={AUTOSIZE_TEXTAREA_CLASS}
+        className={cn(
+          AUTOSIZE_TEXTAREA_CLASS,
+          resized && 'min-h-0 flex-1 overflow-auto',
+        )}
       />
     </BaseNode>
   )

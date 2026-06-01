@@ -49,4 +49,13 @@ export const useStore = createWithEqualityFn((set, get) => ({
       ),
     })
   },
+  setNodeSize: (nodeId, width, height) => {
+    set({
+      nodes: get().nodes.map((node) =>
+        node.id === nodeId
+          ? { ...node, data: { ...node.data, w: width, h: height } }
+          : node,
+      ),
+    })
+  },
 }))
