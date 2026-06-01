@@ -3,18 +3,17 @@ import { useUpdateNodeInternals } from 'reactflow'
 import { useStore } from '@/store'
 import { BaseNode } from '@/nodes/BaseNode'
 
-const VARIABLE_PATTERN = /\{\{\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*\}\}/g
 const MIN_WIDTH = 220
 const MAX_WIDTH = 440
 const MIN_BODY_HEIGHT = 44
 const MAX_BODY_HEIGHT = 320
 
 function extractVariables(text) {
+  const pattern = /\{\{\s*([A-Za-z_$][A-Za-z0-9_$]*)\s*\}\}/g
   const variables = []
   const seen = new Set()
   let match
-  VARIABLE_PATTERN.lastIndex = 0
-  while ((match = VARIABLE_PATTERN.exec(text)) !== null) {
+  while ((match = pattern.exec(text)) !== null) {
     const name = match[1]
     if (!seen.has(name)) {
       seen.add(name)
@@ -53,7 +52,7 @@ export function TextNode({ id, data, selected }) {
 
   const handles = useMemo(() => {
     const variableHandles = variables.map((name) => ({
-      id: name,
+      id: `var-${name}`,
       kind: 'target',
       side: 'left',
     }))

@@ -139,7 +139,7 @@ body,
   width: 9px;
   height: 9px;
   background: #6366f1;
-  border: 2px solid #ffffff;
+  border: 2px solid var(--background);
 }
 
 .react-flow__handle:hover {
