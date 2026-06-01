@@ -48,8 +48,8 @@ export default function App() {
   )
 
   return (
-    <div className="flex h-screen flex-col bg-canvas text-ink">
-      <header className="flex items-center justify-between border-b border-line px-5 py-3">
+    <div className="flex h-screen flex-col gap-3 bg-subtle p-3 text-ink">
+      <header className="flex items-center justify-between rounded-xl border border-line bg-canvas px-4 py-2.5">
         <div className="flex items-center gap-2.5">
           <span className="flex size-7 items-center justify-center rounded-md bg-ink text-canvas">
             <Workflow className="size-4" strokeWidth={2.25} />
@@ -66,7 +66,7 @@ export default function App() {
 
       <PipelineToolbar />
 
-      <div className="relative min-h-0 flex-1">
+      <div className="relative min-h-0 flex-1 overflow-hidden rounded-xl border border-line bg-canvas">
         <PipelineUI />
         <ResultOverlay feedback={feedback} />
       </div>
