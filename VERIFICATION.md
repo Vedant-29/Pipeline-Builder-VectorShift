@@ -28,7 +28,8 @@ All correct.
 **Four-agent code review.** Independent reviewers covered the abstraction, the text
 node, the backend + submit, and styling/UX. Dispositions below.
 
-**Live browser dogfood.** Nodes render with fields, defaults, and indigo handles.
+**Live browser dogfood.** Dragging Input, LLM, Math, and Note chips from the toolbar
+drops each node at the cursor with the right fields, defaults, and indigo handles.
 Typing `Hello {{ name }}, write about {{ topic }} for {{ name }}` into the Text node
 produced exactly two left handles (deduped) and widened the node. Submit produced
 `3 nodes, 0 edges. This pipeline is a valid DAG.`; after injecting a cycle,
@@ -43,7 +44,7 @@ produced exactly two left handles (deduped) and widened the node. Submit produce
 | `{{output}}` variable handle could collide with the node's output handle id | textNode.jsx | Namespaced variable handles as `var-<name>`. |
 | Module-scoped regex carried `lastIndex` state across calls | textNode.jsx | Moved the regex inside the function. |
 | `onDrop` could read a null instance if a drop fired before init | ui.jsx | Added an early return guard. |
-| `rfInstance.project()` is deprecated in ReactFlow 11 | ui.jsx | Switched to `screenToFlowPosition`. |
+| Drop handler position API | ui.jsx | Kept `project()` with wrapper-bounds math. A reviewer suggested `screenToFlowPosition`, but that method is not on the instance in ReactFlow 11.8.3; the switch broke drops and was reverted after a live drag test confirmed the root cause. |
 | Zustand `create` + equality-fn selector logged a deprecation warning | store.js | Switched to `createWithEqualityFn`. |
 | Draggable chips had no keyboard focus state | DraggableNode.jsx | Added `tabIndex` and a focus ring. |
 | Handle border used a raw hex | index.css | Switched to `var(--background)`. |

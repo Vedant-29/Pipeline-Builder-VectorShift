@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import ReactFlow, { Background, Controls, MiniMap } from 'reactflow'
 import { shallow } from 'zustand/shallow'
 import 'reactflow/dist/style.css'
@@ -41,6 +41,7 @@ const selector = (state) => ({
 })
 
 export function PipelineUI() {
+  const wrapperRef = useRef(null)
   const [rfInstance, setRfInstance] = useState(null)
   const {
     nodes,
@@ -65,9 +66,10 @@ export function PipelineUI() {
       if (!raw) return
       const { nodeType } = JSON.parse(raw)
       if (!nodeType) return
-      const position = rfInstance.screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY,
+      const bounds = wrapperRef.current.getBoundingClientRect()
+      const position = rfInstance.project({
+        x: event.clientX - bounds.left,
+        y: event.clientY - bounds.top,
       })
       const id = getNodeID(nodeType)
       addNode({ id, type: nodeType, position, data: { id, nodeType } })
@@ -76,7 +78,7 @@ export function PipelineUI() {
   )
 
   return (
-    <div className="min-h-0 flex-1">
+    <div ref={wrapperRef} className="min-h-0 flex-1">
       <ReactFlow
         nodes={nodes}
         edges={edges}
