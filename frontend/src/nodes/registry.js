@@ -11,25 +11,12 @@ import {
 } from 'lucide-react'
 import { TextNode } from '@/nodes/textNode'
 
-export const accents = {
-  customInput: '#10b981',
-  llm: '#8b5cf6',
-  customOutput: '#3b82f6',
-  text: '#0ea5e9',
-  math: '#f59e0b',
-  filter: '#06b6d4',
-  api: '#6366f1',
-  note: '#eab308',
-  conditional: '#f43f5e',
-}
-
 export const nodeDefs = [
   {
     type: 'customInput',
     label: 'Input',
     title: 'Input',
     icon: LogIn,
-    accent: accents.customInput,
     fields: [
       {
         key: 'inputName',
@@ -52,7 +39,6 @@ export const nodeDefs = [
     label: 'LLM',
     title: 'LLM',
     icon: Sparkles,
-    accent: accents.llm,
     description: 'This is a LLM.',
     fields: [],
     handles: [
@@ -66,7 +52,6 @@ export const nodeDefs = [
     label: 'Output',
     title: 'Output',
     icon: LogOut,
-    accent: accents.customOutput,
     fields: [
       {
         key: 'outputName',
@@ -88,7 +73,6 @@ export const nodeDefs = [
     type: 'text',
     label: 'Text',
     icon: Type,
-    accent: accents.text,
     component: TextNode,
   },
   {
@@ -96,7 +80,6 @@ export const nodeDefs = [
     label: 'Math',
     title: 'Math',
     icon: Calculator,
-    accent: accents.math,
     fields: [
       {
         key: 'operation',
@@ -122,7 +105,6 @@ export const nodeDefs = [
     label: 'Filter',
     title: 'Filter',
     icon: Filter,
-    accent: accents.filter,
     fields: [
       {
         key: 'condition',
@@ -141,7 +123,6 @@ export const nodeDefs = [
     label: 'API',
     title: 'API Request',
     icon: Globe,
-    accent: accents.api,
     fields: [
       {
         key: 'url',
@@ -167,7 +148,6 @@ export const nodeDefs = [
     label: 'Note',
     title: 'Note',
     icon: StickyNote,
-    accent: accents.note,
     fields: [{ key: 'note', type: 'textarea', placeholder: 'Write a note...' }],
     handles: [],
   },
@@ -176,7 +156,6 @@ export const nodeDefs = [
     label: 'Conditional',
     title: 'Conditional',
     icon: GitBranch,
-    accent: accents.conditional,
     fields: [
       {
         key: 'expression',

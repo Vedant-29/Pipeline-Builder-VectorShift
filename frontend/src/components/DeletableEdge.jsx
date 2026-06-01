@@ -36,7 +36,7 @@ export function DeletableEdge({
           type="button"
           onClick={() => deleteElements({ edges: [{ id }] })}
           aria-label="Delete connection"
-          className="nodrag nopan flex size-5 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-400 shadow-sm transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-500"
+          className="nodrag nopan flex size-5 items-center justify-center rounded-full border border-line bg-surface text-faint shadow-sm transition-colors hover:border-clay/40 hover:bg-clay/10 hover:text-clay"
           style={{
             position: 'absolute',
             transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,

@@ -93,20 +93,20 @@ chips from the registry. Adding a simple node = one registry entry, no new file.
 
 ## Part 2: Styling
 
-shadcn + Tailwind, no gradients. Each node type carries its own accent color
-(Input emerald, LLM violet, Output blue, Text sky, Math amber, Filter cyan, API
-indigo, Note yellow, Conditional rose) used on its icon chip, handles, and minimap
-swatch. White node cards on a slate canvas with a visible dotted background.
+A warm, minimal, editorial system inspired by the user's portfolio: cream canvas,
+warm near-black ink, hairline borders, flat surfaces, Geist + Geist Mono, and a
+single clay accent (`#c25a3c`) used only on handles, selection, and focus. No
+gradients, no per-element color.
 
 | Surface | Treatment |
 |---|---|
-| Canvas | slate-50 with a `Dots` background; styled Controls and a color-coded MiniMap |
-| Node | white card, icon-chip header in the node accent, labeled colored handles |
-| Fields | shadcn Input/Select/Textarea with small slate labels |
-| Toolbar | white chips with accent icons and a hover lift |
-| Header | indigo logo mark, wordmark, indigo Submit; result alert is a Sonner toast |
+| Canvas | cream `#f7f5f1`, faint warm dots; warm Controls and a single-tone MiniMap |
+| Node | white card, hairline border, muted icon + ink title, clay handles, mono handle labels |
+| Fields | hairline border, mono small-caps labels, subtle clay focus ring |
+| Toolbar | flat warm chips with muted icons |
+| Header | dark-ink logo mark and dark-ink Submit (CTA); result alert is a Sonner toast |
 
-Per-type accents plus consistent spacing keep it lively but unified.
+One accent over a warm monochrome palette keeps it quiet and clean.
 
 ## Part 3: Text node logic
 

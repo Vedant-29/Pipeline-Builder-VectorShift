@@ -4,7 +4,6 @@ import { Type } from 'lucide-react'
 import { useStore } from '@/store'
 import { BaseNode } from '@/nodes/BaseNode'
 
-const ACCENT = '#0ea5e9'
 const MIN_WIDTH = 230
 const MAX_WIDTH = 440
 const MIN_BODY_HEIGHT = 44
@@ -88,19 +87,20 @@ export function TextNode({ id, data, selected }) {
       selected={selected}
       title="Text"
       icon={Type}
-      accent={ACCENT}
       handles={handles}
       width={width}
     >
       <label className="flex flex-col gap-1.5">
-        <span className="text-[11px] font-medium text-slate-500">Text</span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-faint">
+          Text
+        </span>
         <textarea
           ref={textareaRef}
           value={text}
           onChange={onChange}
           rows={1}
           spellCheck={false}
-          className="nodrag w-full resize-none rounded-md border border-slate-200 bg-transparent px-2.5 py-1.5 text-[13px] text-slate-800 shadow-xs outline-none transition-colors focus-visible:border-sky-400 focus-visible:ring-2 focus-visible:ring-sky-400/30"
+          className="nodrag w-full resize-none rounded-md border border-line bg-surface px-2.5 py-1.5 font-mono text-[12.5px] text-ink outline-none transition-colors placeholder:text-faint focus-visible:border-clay focus-visible:ring-2 focus-visible:ring-clay/20"
         />
       </label>
     </BaseNode>

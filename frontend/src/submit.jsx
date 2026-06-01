@@ -45,7 +45,7 @@ export function SubmitBar() {
       onClick={onSubmit}
       disabled={loading}
       size="sm"
-      className="bg-indigo-600 text-white shadow-sm hover:bg-indigo-700"
+      className="bg-ink text-canvas hover:bg-ink/90"
     >
       {loading ? 'Submitting...' : 'Submit'}
     </Button>

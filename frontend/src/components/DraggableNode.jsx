@@ -1,4 +1,4 @@
-export function DraggableNode({ type, label, icon: Icon, accent = '#6366f1' }) {
+export function DraggableNode({ type, label, icon: Icon }) {
   const onDragStart = (event) => {
     event.dataTransfer.setData(
       'application/reactflow',
@@ -12,16 +12,9 @@ export function DraggableNode({ type, label, icon: Icon, accent = '#6366f1' }) {
       draggable
       tabIndex={0}
       onDragStart={onDragStart}
-      className="flex cursor-grab items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[13px] font-medium text-slate-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 active:translate-y-0 active:cursor-grabbing"
+      className="flex cursor-grab items-center gap-2 rounded-lg border border-line bg-surface px-2.5 py-1.5 text-[13px] font-medium text-ink transition-colors hover:border-line-strong hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-clay/30 active:cursor-grabbing"
     >
-      {Icon ? (
-        <span
-          className="flex size-5 items-center justify-center rounded"
-          style={{ backgroundColor: `${accent}1a`, color: accent }}
-        >
-          <Icon className="size-3.5" strokeWidth={2.25} />
-        </span>
-      ) : null}
+      {Icon ? <Icon className="size-4 text-faint" strokeWidth={2} /> : null}
       <span>{label}</span>
     </div>
   )

@@ -2,6 +2,20 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
+@theme {
+  --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
+  --color-canvas: #f7f5f1;
+  --color-surface: #ffffff;
+  --color-subtle: #efece5;
+  --color-ink: #1a1714;
+  --color-dim: #57514a;
+  --color-faint: #7c756c;
+  --color-line: #e1ddd3;
+  --color-line-strong: #c8c2b6;
+  --color-clay: #c25a3c;
+}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -119,14 +133,11 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
-    }
+    @apply border-line;
+  }
   body {
-    @apply bg-background text-foreground;
-    }
-  html {
-    @apply font-sans;
-    }
+    @apply bg-canvas text-ink font-sans;
+  }
 }
 
 html,
@@ -136,51 +147,51 @@ body,
 }
 
 .react-flow__handle {
-  width: 11px;
-  height: 11px;
+  width: 10px;
+  height: 10px;
+  background: #c25a3c;
   border: 2px solid #ffffff;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.18);
+  box-shadow: 0 1px 2px rgba(26, 23, 20, 0.12);
   transition: box-shadow 0.12s ease;
 }
 
 .react-flow__handle:hover {
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+  box-shadow: 0 0 0 4px rgba(194, 90, 60, 0.16);
 }
 
 .react-flow__handle.connecting {
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.18);
+  box-shadow: 0 0 0 4px rgba(194, 90, 60, 0.22);
 }
 
 .react-flow__edge-path {
-  stroke: #94a3b8;
+  stroke: #c8c2b6;
   stroke-width: 1.5;
 }
 
 .react-flow__edge.selected .react-flow__edge-path,
 .react-flow__edge:hover .react-flow__edge-path {
-  stroke: #6366f1;
-  stroke-width: 2;
+  stroke: #c25a3c;
 }
 
 .react-flow__controls {
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 14px -6px rgba(15, 23, 42, 0.2);
+  border: 1px solid #e1ddd3;
+  box-shadow: 0 4px 14px -8px rgba(26, 23, 20, 0.16);
 }
 
 .react-flow__controls-button {
   width: 28px;
   height: 28px;
   border: none;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid #efece5;
   background: #ffffff;
-  color: #475569;
+  color: #57514a;
 }
 
 .react-flow__controls-button:hover {
-  background: #f8fafc;
-  color: #4f46e5;
+  background: #f7f5f1;
+  color: #c25a3c;
 }
 
 .react-flow__controls-button svg {
@@ -188,8 +199,8 @@ body,
 }
 
 .react-flow__minimap {
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 14px -6px rgba(15, 23, 42, 0.2);
+  border: 1px solid #e1ddd3;
+  box-shadow: 0 4px 14px -8px rgba(26, 23, 20, 0.12);
 }

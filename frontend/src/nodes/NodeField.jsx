@@ -27,7 +27,7 @@ export function NodeField({ nodeId, data, field }) {
   return (
     <label className="flex flex-col gap-1.5">
       {field.label ? (
-        <span className="text-[11px] font-medium text-slate-500">
+        <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-faint">
           {field.label}
         </span>
       ) : null}

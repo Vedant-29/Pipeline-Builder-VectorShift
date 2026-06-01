@@ -11,7 +11,7 @@ import {
 import { shallow } from 'zustand/shallow'
 import '@xyflow/react/dist/style.css'
 import { useStore } from '@/store'
-import { nodeDefs, accents } from '@/nodes/registry'
+import { nodeDefs } from '@/nodes/registry'
 import { BaseNode } from '@/nodes/BaseNode'
 import { DeletableEdge } from '@/components/DeletableEdge'
 
@@ -104,14 +104,14 @@ function FlowCanvas() {
       fitView
       fitViewOptions={{ padding: 0.3, maxZoom: 1 }}
     >
-      <Background variant={BackgroundVariant.Dots} gap={GRID} size={2} color="#cbd5e1" />
+      <Background variant={BackgroundVariant.Dots} gap={GRID} size={1.5} color="#d6cfc2" />
       <Controls showInteractive={false} />
       <MiniMap
         pannable
         zoomable
-        nodeColor={(node) => accents[node.type] ?? '#94a3b8'}
+        nodeColor="#cdc6ba"
         nodeStrokeWidth={0}
-        maskColor="rgba(148, 163, 184, 0.1)"
+        maskColor="rgba(124, 117, 108, 0.08)"
       />
     </ReactFlow>
   )
