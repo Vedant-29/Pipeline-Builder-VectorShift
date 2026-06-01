@@ -1,0 +1,40 @@
+# ── Dependencies ──
+node_modules/
+/.pnp
+.pnp.js
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# ── Build output ──
+build/
+dist/
+/coverage
+
+# ── Env / secrets ──
+.env
+.env.local
+.env.*.local
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+
+# ── Editor / tooling ──
+.vscode/
+.idea/
+.gstack/
+.claude/
+CLAUDE.md
+
+# ── Logs ──
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
