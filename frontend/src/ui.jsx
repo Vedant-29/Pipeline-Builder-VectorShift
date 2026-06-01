@@ -101,8 +101,8 @@ function FlowCanvas() {
       deleteKeyCode={['Backspace', 'Delete']}
       connectionLineType="smoothstep"
       defaultEdgeOptions={{ type: 'deletable' }}
-      fitView
-      fitViewOptions={{ padding: 0.3, maxZoom: 1 }}
+      nodeOrigin={[0.5, 0.5]}
+      defaultViewport={{ x: 0, y: 0, zoom: 1 }}
     >
       <Background variant={BackgroundVariant.Dots} gap={GRID} size={1.5} color="#d6cfc2" />
       <Controls showInteractive={false} />

@@ -50,7 +50,7 @@ export function BaseNode({
       )}
       style={{
         width,
-        boxShadow: selected ? '0 0 0 3px rgba(194, 90, 60, 0.12)' : undefined,
+        boxShadow: selected ? '0 0 0 2px rgba(194, 90, 60, 0.10)' : undefined,
       }}
     >
       {leftHandles.map((handle, index) => {

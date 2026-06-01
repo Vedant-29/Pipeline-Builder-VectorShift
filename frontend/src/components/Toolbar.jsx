@@ -3,7 +3,10 @@ import { DraggableNode } from '@/components/DraggableNode'
 
 export function PipelineToolbar() {
   return (
-    <div className="rounded-xl border border-line bg-surface px-3 py-2.5">
+    <div className="rounded-xl border border-line bg-surface px-3.5 py-3">
+      <p className="mb-2.5 text-[11px] font-medium text-faint">
+        Drag a node onto the canvas
+      </p>
       <div className="flex flex-wrap gap-1.5">
         {nodeDefs.map((def) => (
           <DraggableNode
