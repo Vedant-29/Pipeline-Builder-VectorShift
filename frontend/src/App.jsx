@@ -49,22 +49,23 @@ export default function App() {
 
   return (
     <div className="flex h-screen flex-col gap-3 bg-subtle p-3 text-ink">
-      <header className="flex items-center justify-between rounded-xl border border-line bg-canvas px-4 py-2.5">
-        <div className="flex items-center gap-2.5">
-          <span className="flex size-7 items-center justify-center rounded-md bg-ink text-canvas">
-            <Workflow className="size-4" strokeWidth={2.25} />
-          </span>
-          <span className="text-[15px] font-semibold tracking-tight text-ink">
-            VectorShift
-          </span>
+      <div className="rounded-xl border border-line bg-canvas">
+        <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
+          <div className="flex items-center gap-2">
+            <span className="flex size-6 items-center justify-center rounded-md bg-ink text-canvas">
+              <Workflow className="size-3.5" strokeWidth={2.25} />
+            </span>
+            <span className="text-sm font-semibold tracking-tight text-ink">
+              VectorShift
+            </span>
+          </div>
+          <SubmitBar
+            onResult={(value) => flash({ result: value })}
+            onError={(message) => flash({ error: message })}
+          />
         </div>
-        <SubmitBar
-          onResult={(value) => flash({ result: value })}
-          onError={(message) => flash({ error: message })}
-        />
-      </header>
-
-      <PipelineToolbar />
+        <PipelineToolbar />
+      </div>
 
       <div className="relative min-h-0 flex-1 overflow-hidden rounded-xl border border-line bg-canvas">
         <PipelineUI />

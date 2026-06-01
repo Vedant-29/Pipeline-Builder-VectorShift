@@ -46,7 +46,7 @@ function NodeSelect({ value, options, onChange }) {
         />
       </button>
       {open ? (
-        <div className="nodrag nowheel absolute top-[calc(100%+4px)] left-0 z-50 w-full overflow-hidden rounded-md border border-line bg-surface py-1 shadow-lg">
+        <div className="nodrag nowheel absolute top-[calc(100%+4px)] left-0 z-50 w-full rounded-lg border border-line bg-surface p-1 shadow-lg">
           {options.map((option) => (
             <button
               key={option.value}
@@ -56,7 +56,7 @@ function NodeSelect({ value, options, onChange }) {
                 setOpen(false)
               }}
               className={cn(
-                'flex w-full items-center justify-between px-2.5 py-1.5 text-left text-[13px] transition-colors hover:bg-subtle',
+                'flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-[13px] transition-colors hover:bg-subtle',
                 option.value === value ? 'text-ink' : 'text-dim',
               )}
             >
