@@ -1,4 +1,6 @@
-export function DraggableNode({ type, label, icon: Icon }) {
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
+
+export function DraggableNode({ type, label, icon: Icon, hint }) {
   const onDragStart = (event) => {
     event.dataTransfer.setData(
       'application/reactflow',
@@ -19,7 +21,7 @@ export function DraggableNode({ type, label, icon: Icon }) {
     setTimeout(() => document.body.removeChild(ghost), 0)
   }
 
-  return (
+  const chip = (
     <div
       draggable
       tabIndex={0}
@@ -29,5 +31,14 @@ export function DraggableNode({ type, label, icon: Icon }) {
       {Icon ? <Icon className="size-3.5 text-faint" strokeWidth={2} /> : null}
       <span>{label}</span>
     </div>
+  )
+
+  if (!hint) return chip
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{chip}</TooltipTrigger>
+      <TooltipContent side="bottom">{hint}</TooltipContent>
+    </Tooltip>
   )
 }

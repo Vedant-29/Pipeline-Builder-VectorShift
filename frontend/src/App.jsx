@@ -1,24 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ReactFlowProvider, useReactFlow } from '@xyflow/react'
-import {
-  Workflow,
-  Undo2,
-  Redo2,
-  Wand2,
-  Search,
-  Download,
-  Upload,
-  Trash2,
-  Moon,
-  Sun,
-} from 'lucide-react'
+import { Workflow, Search, CheckCircle2, TriangleAlert } from 'lucide-react'
 import { PipelineToolbar } from '@/components/Toolbar'
 import { PipelineUI } from '@/ui'
 import { CommandPalette } from '@/components/CommandPalette'
+import { CanvasToolbar } from '@/components/CanvasToolbar'
+import { Kbd } from '@/components/Kbd'
+import { TooltipProvider } from '@/components/ui/tooltip'
 import { useSubmit } from '@/submit'
 import { useStore } from '@/store'
 import { tidyLayout } from '@/lib/layout'
-import { cn } from '@/lib/utils'
 
 const isMac =
   typeof navigator !== 'undefined' && navigator.platform.toUpperCase().includes('MAC')
@@ -31,9 +22,15 @@ function plural(count, word) {
 function ResultOverlay({ feedback }) {
   if (!feedback) return null
   const { result, error, note } = feedback
+  const warn = Boolean(error || note || (result && !result.is_dag))
   return (
     <div className="pointer-events-none absolute inset-x-0 top-3 z-10 flex justify-center">
-      <div className="animate-in fade-in slide-in-from-top-1 rounded-full border border-line bg-surface/95 px-3.5 py-1.5 text-xs duration-200">
+      <div className="animate-in fade-in slide-in-from-top-1 flex items-center gap-2 rounded-full border border-line bg-surface/95 py-1.5 pl-3 pr-3.5 text-xs shadow-sm duration-200">
+        {warn ? (
+          <TriangleAlert className="size-3.5 shrink-0 text-clay" strokeWidth={2} />
+        ) : (
+          <CheckCircle2 className="size-3.5 shrink-0 text-faint" strokeWidth={2} />
+        )}
         {error ? (
           <span className="text-clay">{error}</span>
         ) : note ? (
@@ -52,22 +49,18 @@ function ResultOverlay({ feedback }) {
   )
 }
 
-function IconButton({ icon: Icon, label, onClick }) {
+function SearchTrigger({ mod, onClick }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      title={label}
-      aria-label={label}
-      className="flex size-7 items-center justify-center rounded-md text-dim transition-colors hover:bg-subtle hover:text-ink"
+      className="flex items-center gap-2 rounded-md border border-line bg-surface px-2.5 py-1.5 text-[13px] text-faint transition-colors hover:border-line-strong hover:text-dim"
     >
-      <Icon className="size-4" strokeWidth={2} />
+      <Search className="size-3.5" strokeWidth={2} />
+      <span>Search nodes</span>
+      <Kbd keys={[mod, 'K']} tone="onLight" className="ml-4" />
     </button>
   )
-}
-
-function Divider() {
-  return <span className="mx-0.5 h-4 w-px bg-line" />
 }
 
 function Workspace() {
@@ -223,18 +216,33 @@ function Workspace() {
         (target.tagName === 'INPUT' ||
           target.tagName === 'TEXTAREA' ||
           target.isContentEditable)
+      const key = event.key.toLowerCase()
       if (mod && event.key === 'Enter') {
         event.preventDefault()
         submit()
         return
       }
-      if (mod && event.key.toLowerCase() === 'k') {
+      if (mod && key === 'k') {
         event.preventDefault()
         setPaletteOpen((open) => !open)
         return
       }
+      if (mod && key === 's') {
+        event.preventDefault()
+        exportJson()
+        return
+      }
+      if (mod && key === 'o') {
+        event.preventDefault()
+        fileRef.current?.click()
+        return
+      }
+      if (mod && event.shiftKey && key === 'l') {
+        event.preventDefault()
+        tidy()
+        return
+      }
       if (typing) return
-      const key = event.key.toLowerCase()
       if (mod && key === 'z') {
         event.preventDefault()
         if (event.shiftKey) redo()
@@ -250,7 +258,7 @@ function Workspace() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [submit, undo, redo, duplicateSelected, copy, paste])
+  }, [submit, undo, redo, duplicateSelected, copy, paste, exportJson, tidy])
 
   return (
     <div className="flex h-screen flex-col gap-3 bg-subtle p-3 text-ink">
@@ -265,30 +273,8 @@ function Workspace() {
             </span>
           </div>
 
-          <div className="flex items-center gap-0.5">
-            <IconButton icon={Undo2} label={`Undo (${MOD}Z)`} onClick={undo} />
-            <IconButton icon={Redo2} label={`Redo (${MOD}⇧Z)`} onClick={redo} />
-            <Divider />
-            <IconButton icon={Wand2} label="Tidy layout" onClick={tidy} />
-            <IconButton
-              icon={Search}
-              label={`Add node (${MOD}K)`}
-              onClick={() => setPaletteOpen(true)}
-            />
-            <Divider />
-            <IconButton icon={Download} label="Export JSON" onClick={exportJson} />
-            <IconButton
-              icon={Upload}
-              label="Import JSON"
-              onClick={() => fileRef.current?.click()}
-            />
-            <IconButton icon={Trash2} label="Clear canvas" onClick={clear} />
-            <IconButton
-              icon={dark ? Sun : Moon}
-              label="Toggle theme"
-              onClick={() => setDark((value) => !value)}
-            />
-            <Divider />
+          <div className="flex items-center gap-2">
+            <SearchTrigger mod={MOD} onClick={() => setPaletteOpen(true)} />
             <button
               type="button"
               onClick={submit}
@@ -296,9 +282,7 @@ function Workspace() {
               className="flex items-center gap-1.5 rounded-md bg-ink px-2.5 py-1.5 text-[13px] font-medium text-canvas transition-opacity hover:opacity-90 disabled:opacity-60"
             >
               {loading ? 'Submitting…' : 'Submit'}
-              <kbd className="rounded bg-canvas/15 px-1 py-px font-mono text-[10px] text-canvas/70">
-                {MOD}↵
-              </kbd>
+              <Kbd keys={[MOD, '↵']} tone="onDark" />
             </button>
           </div>
         </div>
@@ -307,6 +291,17 @@ function Workspace() {
 
       <div className="relative min-h-0 flex-1 overflow-hidden rounded-xl border border-line bg-canvas">
         <PipelineUI onCycleWarning={() => flash({ note: 'That connection creates a cycle' })} />
+        <CanvasToolbar
+          mod={MOD}
+          dark={dark}
+          onUndo={undo}
+          onRedo={redo}
+          onTidy={tidy}
+          onToggleTheme={() => setDark((value) => !value)}
+          onExport={exportJson}
+          onImport={() => fileRef.current?.click()}
+          onClear={clear}
+        />
         <ResultOverlay feedback={feedback} />
       </div>
 
@@ -329,7 +324,9 @@ function Workspace() {
 export default function App() {
   return (
     <ReactFlowProvider>
-      <Workspace />
+      <TooltipProvider delayDuration={200}>
+        <Workspace />
+      </TooltipProvider>
     </ReactFlowProvider>
   )
 }

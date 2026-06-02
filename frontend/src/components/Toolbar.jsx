@@ -1,6 +1,18 @@
 import { nodeDefs } from '@/nodes/registry'
 import { DraggableNode } from '@/components/DraggableNode'
 
+const NODE_HINTS = {
+  customInput: 'Feed a value into the pipeline',
+  llm: 'Run a prompt through a language model',
+  customOutput: 'Expose a pipeline result',
+  text: 'Compose text with {{ variables }}',
+  math: 'Compute a numeric operation',
+  filter: 'Keep values that match a condition',
+  api: 'Call an external HTTP endpoint',
+  note: 'Annotate the canvas',
+  conditional: 'Branch on a true / false expression',
+}
+
 export function PipelineToolbar() {
   return (
     <div className="px-4 py-3">
@@ -14,6 +26,7 @@ export function PipelineToolbar() {
             type={def.type}
             label={def.label}
             icon={def.icon}
+            hint={NODE_HINTS[def.type]}
           />
         ))}
       </div>
