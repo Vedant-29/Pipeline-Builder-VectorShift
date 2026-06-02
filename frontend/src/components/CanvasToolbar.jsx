@@ -10,13 +10,13 @@ import {
   Trash2,
 } from 'lucide-react'
 import { Hint } from '@/components/Hint'
+import { Kbd } from '@/components/Kbd'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
 } from '@/components/ui/dropdown-menu'
 
 function BarButton({ icon: Icon, label, keys, onClick }) {
@@ -50,7 +50,7 @@ export function CanvasToolbar({
   onClear,
 }) {
   return (
-    <div className="absolute right-3 top-3 z-10 flex items-center gap-0.5 rounded-lg border border-line bg-surface/90 p-1 shadow-sm backdrop-blur-sm">
+    <div className="absolute right-3 top-3 z-10 flex items-center gap-0.5 rounded-lg border border-line bg-surface/90 p-1 shadow-[0_4px_14px_-8px_rgba(26,23,20,0.16)] backdrop-blur-sm">
       <BarButton icon={Undo2} label="Undo" keys={[mod, 'Z']} onClick={onUndo} />
       <BarButton
         icon={Redo2}
@@ -86,12 +86,12 @@ export function CanvasToolbar({
           <DropdownMenuItem onSelect={onExport}>
             <Download />
             Export JSON
-            <DropdownMenuShortcut>{mod}S</DropdownMenuShortcut>
+            <Kbd keys={[mod, 'S']} tone="onLight" className="ml-auto" />
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={onImport}>
             <Upload />
             Import JSON
-            <DropdownMenuShortcut>{mod}O</DropdownMenuShortcut>
+            <Kbd keys={[mod, 'O']} tone="onLight" className="ml-auto" />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
