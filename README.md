@@ -11,14 +11,7 @@ A visual pipeline builder — drag nodes onto a canvas, wire them together, and 
 
 ![VectorShift Pipeline Builder](./docs/hero-light.png)
 
-<details>
-<summary>Dark mode</summary>
-
-![Dark mode](./docs/hero-dark.png)
-
-</details>
-
-> A full walkthrough video was submitted alongside this repo.
+> **▶ [Watch the full walkthrough](./docs/demo.mp4)** — a side-by-side tour of the app and the code (~5½ min).
 
 ## What it does
 
