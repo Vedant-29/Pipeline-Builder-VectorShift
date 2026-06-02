@@ -226,3 +226,31 @@ html.dark {
   background: var(--color-surface);
   box-shadow: 0 4px 14px -8px rgba(26, 23, 20, 0.12);
 }
+
+.vs-node-preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 12px;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: 'Geist Variable', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  box-shadow: 0 6px 16px -10px rgba(26, 23, 20, 0.22);
+  opacity: 0.96;
+}
+
+.vs-node-preview svg {
+  width: 16px;
+  height: 16px;
+  color: var(--color-dim);
+}
