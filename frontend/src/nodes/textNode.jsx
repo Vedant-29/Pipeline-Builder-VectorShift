@@ -61,6 +61,7 @@ export function TextNode({ id, data, selected }) {
       width={width}
       minWidth={200}
       minHeight={120}
+      autoMinHeight={false}
     >
       <label className={cn('flex flex-col gap-1.5', resized && 'min-h-0 flex-1')}>
         <span className="text-[11px] font-medium text-faint">Text</span>

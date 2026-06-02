@@ -34,6 +34,7 @@ export function NoteNode({ id, data, selected }) {
       width={width}
       minWidth={200}
       minHeight={120}
+      autoMinHeight={false}
     >
       <textarea
         ref={textareaRef}

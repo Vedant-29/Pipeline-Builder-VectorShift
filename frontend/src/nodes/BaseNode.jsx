@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useLayoutEffect, useRef, useState } from 'react'
 import { Handle, Position, NodeResizer, useReactFlow } from '@xyflow/react'
 import { X } from 'lucide-react'
 import { NodeField } from '@/nodes/NodeField'
@@ -38,12 +38,28 @@ export function BaseNode({
   handles = [],
   children,
   width = 248,
-  minWidth = 180,
-  minHeight = 90,
+  minWidth = 200,
+  minHeight = 96,
+  autoMinHeight = true,
 }) {
   const { deleteElements } = useReactFlow()
   const setNodeSize = useStore((state) => state.setNodeSize)
   const edges = useStore((state) => state.edges)
+  const headerRef = useRef(null)
+  const bodyRef = useRef(null)
+  const [contentMinHeight, setContentMinHeight] = useState(minHeight)
+
+  useLayoutEffect(() => {
+    if (!autoMinHeight) return
+    const header = headerRef.current
+    const body = bodyRef.current
+    if (!header || !body) return
+    const natural = header.offsetHeight + body.offsetHeight + 2
+    setContentMinHeight((prev) =>
+      Math.abs(prev - natural) > 1 ? Math.max(natural, minHeight) : prev,
+    )
+  }, [autoMinHeight, minHeight, fields.length, description, data?.w])
+
   const isConnected = (handleId) =>
     edges.some(
       (edge) =>
@@ -52,6 +68,7 @@ export function BaseNode({
     )
   const leftHandles = handlesOnSide(handles, 'left')
   const rightHandles = handlesOnSide(handles, 'right')
+  const resizerMinHeight = autoMinHeight ? contentMinHeight : minHeight
 
   return (
     <div
@@ -61,13 +78,13 @@ export function BaseNode({
       )}
       style={{
         width: data?.w ?? width,
-        height: data?.h ?? undefined,
+        minHeight: data?.h ?? undefined,
         boxShadow: selected ? '0 0 0 2px rgba(194, 90, 60, 0.10)' : undefined,
       }}
     >
       <NodeResizer
         minWidth={minWidth}
-        minHeight={minHeight}
+        minHeight={resizerMinHeight}
         isVisible={selected}
         onResize={(_, params) => setNodeSize(id, params.width, params.height)}
         handleStyle={{
@@ -99,7 +116,10 @@ export function BaseNode({
         )
       })}
 
-      <div className="flex items-center gap-2 border-b border-line px-3 py-2.5">
+      <div
+        ref={headerRef}
+        className="flex items-center gap-2 border-b border-line px-3 py-2.5"
+      >
         {Icon ? (
           <Icon className="size-4 shrink-0 text-dim" strokeWidth={2} />
         ) : null}
@@ -114,7 +134,13 @@ export function BaseNode({
         </button>
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-col gap-3 px-3 py-3">
+      <div
+        ref={bodyRef}
+        className={cn(
+          'flex flex-col gap-3 px-3 py-3',
+          !autoMinHeight && 'min-h-0 flex-1',
+        )}
+      >
         {description ? (
           <p className="text-xs leading-relaxed text-dim">{description}</p>
         ) : null}
