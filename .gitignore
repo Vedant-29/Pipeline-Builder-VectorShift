@@ -38,3 +38,6 @@ CLAUDE.md
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Personal recording notes (not part of submission)
+RECORDING_CUES.md
